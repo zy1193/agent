@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.CardMapper">
+
+	<resultMap type="Card" id="cardMap">
+		<result property="orderSn" column="order_sn" />
+		<result property="expireDate" column="expire_date" />
+		<result property="agentId" column="agent_id" />
+		<result property="saleStatus" column="sale_status" />
+		<result property="rechargeStatus" column="recharge_status" />
+		<result property="buyTime" column="buy_time" />
+		<result property="saleTime" column="sale_time" />
+		<result property="rechargeTime" column="recharge_time" />
+		<result property="productId" column="product_id" />
+		<result property="payOrderno" column="pay_orderno" />
+		<result property="despwd" column="despwd" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Card" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into card
+		(order_sn, brand_id, no, password, price,
+		expire_date, agent_id, sale_status, recharge_status, buy_time,
+		sale_time, recharge_time, product_id,status,despwd)
+		values
+		(#{orderSn},
+		#{brandid},
+		#{no},
+		null,
+		#{price}, #{expireDate}, #{agentId},
+		#{saleStatus},
+		#{rechargeStatus},
+		now(), #{saleTime},
+		#{rechargeTime},#{productId},#{status},#{despwd})
+	</insert>
+
+	<!-- 库存list -->
+	<select id="list" parameterType="Map" resultMap="cardMap">
+		select product_id, count(1) as counts,sum(price) as pvalue,sale_status
+		from card
+		where sale_status!=2 and agent_id=#{agent_id}
+		<if test="productId!=null">
+			and product_id = #{productId}
+		</if>
+		group by product_id,sale_status
+	</select>
+
+	<!-- 接收充值平台的通知修改卡的充值状态 -->
+	<update id="update" parameterType="Card">
+		update card set
+		recharge_time=now(),pay_orderno=#{payOrderno},uid=#{uid},
+		paymoney=#{paymoney},phone=#{phone},recharge_status=1
+		where
+		password=#{password} or despwd=#{despwd}
+	</update>
+
+	<select id="selectByNo" parameterType="Map" resultMap="cardMap">
+		select
+		id, brand_id,order_sn, no, password, price, despwd,
+		expire_date,
+		agent_id,
+		sale_status,
+		recharge_status, buy_time,
+		sale_time,
+		recharge_time,
+		product_id,pay_orderno,uid,phone,status
+		from
+		card where
+		no=#{no}
+		<if test="agentId!=null"> and agent_id=#{agentId}</if>
+	</select>
+
+	<select id="selectByPassword" parameterType="Card" resultMap="cardMap">
+		select id, brand_id, order_sn, no, password, price,
+		expire_date,
+		agent_id,
+		sale_status, recharge_status, buy_time,
+		sale_time,
+		recharge_time,
+		product_id,pay_orderno,uid,phone,status
+		from card
+		where
+		password=#{password}
+		<if test="despwd!=null"> or despwd=#{despwd} </if>
+	</select>
+
+	<select id="tobeSwitch" parameterType="Card" resultMap="cardMap">
+		select
+		password,despwd from card where status=#{status} and
+		recharge_status='0'
+		and
+		agent_id=#{agentId}
+	</select>
+
+	<update id="switchStatus" parameterType="Card">
+		update card set
+		status=#{status} where agent_id=#{agentId}
+	</update>
+
+	<select id="listRechargeStat" parameterType="Map" resultMap="cardMap">
+		SELECT COUNT(*) as count
+		,sum(paymoney) as sumPaymoney
+		,agent_id
+		,recharge_status
+		,product_id
+		,recharge_time
+		FROM card
+		WHERE
+		recharge_status = '1'
+		<if test="agentId!=null">
+			AND agent_id= #{agentId}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			AND recharge_time BETWEEN #{dateStart} AND #{dateEnd}
+		</if>
+		GROUP BY DATE(recharge_time)
+		,recharge_status
+		,agent_id
+		,product_id
+		ORDER
+		BY DATE(recharge_time) DESC
+		<if test="offset!=null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+
+	<select id="count" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM (
+		SELECT COUNT(*)
+		,sum(paymoney)
+		,agent_id
+		,recharge_status
+		,product_id
+		,recharge_time
+		FROM card
+		WHERE
+		recharge_status = '1'
+		<if test="agentId!=null">
+			AND agent_id= #{agentId}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			AND recharge_time BETWEEN #{dateStart} AND #{dateEnd}
+		</if>
+		GROUP BY DATE(recharge_time)
+		,recharge_status
+		,agent_id
+		,product_id
+		)tab
+	</select>
+	<select id="getCardPassFromBeginToEndNo" parameterType="Map"
+		resultMap="cardMap">
+		select password,despwd,brand_id
+		from card
+		where no between #{begin} AND #{end}
+		<if test="branid!=null and branid.length()>0">
+			brand_id=#{branid}
+		</if>
+		<if test="agentId!=null and agentId.length()>0">
+			and agent_id=#{agentId}
+		</if>
+		<if test="recharge_status!=null and recharge_status.length()>0">
+			and recharge_status=#{recharge_status}
+		</if>
+		<if test="status!=null and status.length()>0">
+			and status=#{status}
+		</if>
+	</select>
+
+	<select id="getCardPassFromCardsNo" parameterType="Map"
+		resultMap="cardMap">
+		select password,despwd,brand_id
+		from card
+		where no in
+         <foreach collection="cardsNo" item="item"  open="(" separator="," close=")">  
+       	 	#{item}  
+     	</foreach>  
+		<if test="agentId!=null and agentId.length()>0">
+			and agent_id=#{agentId}
+		</if>
+		<if test="brandid!=null and brandid.length()>0">
+			and brand_id=#{brandid}
+		</if>
+	</select>
+
+
+	<update id="switchStatusByPass" parameterType="Map">
+		update card set
+		status=#{status} where password in
+		<foreach collection="passList" item="item" open="("
+			separator="," close=")">
+			#{item}  
+     </foreach>
+     or	despwd in
+			<foreach collection="desPassList" item="item" open="("
+				separator="," close=")">
+				#{item}  
+	     </foreach>
+	</update>
+
+
+</mapper> 

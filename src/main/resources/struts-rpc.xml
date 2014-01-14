@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="rpc" namespace="/rpc" extends="struts-default">
+		<global-results>
+			<result name="error" type="freemarker">/template/result/error.ftl</result>
+			<result name="success" type="freemarker">/template/result/success.ftl
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.RuntimeException"></exception-mapping>
+		</global-exception-mappings>
+
+		<!-- 接收充值平台的通知修改卡的充值状态 -->
+		<action name="changecardinfo" class="receivePayInfoAction"
+			method="procpayinfo">
+			<result type="freemarker" name="success">/template/rpc/notify_success.ftl
+			</result>
+			<result type="freemarker" name="error">/template/rpc/notify_error.ftl
+			</result>
+		</action>
+	</package>
+
+</struts>

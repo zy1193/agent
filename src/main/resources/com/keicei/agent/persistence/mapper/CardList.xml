@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.CardList">
+
+	<resultMap type="Card" id="cardlistMap">
+		<result property="productId" column="product_id" />
+		<result property="orderSn" column="order_sn" />
+		<result property="expireDate" column="expire_date" />
+		<result property="agentId" column="agent_id" />
+		<result property="saleStatus" column="sale_status" />
+		<result property="rechargeStatus" column="recharge_status" />
+		<result property="buyTime" column="buy_time" />
+		<result property="saleTime" column="sale_time" />
+		<result property="rechargeTime" column="recharge_time" />
+		<result property="payOrderno" column="pay_orderno" />
+		<result property="despwd" column="despwd" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<select id="list" parameterType="Map" resultMap="cardlistMap">
+		select id,brand_id,order_sn,no,price,expire_date,agent_id,sale_status
+		,recharge_status,buy_time,sale_time,recharge_time,password,product_id
+	    ,pay_orderno,uid,phone,despwd,status
+		from card where 1=1
+		<if test="agent_id!=null and agent_id.length()>0">
+			and agent_id=#{agent_id}
+		</if>
+		
+		<if test="begin!=null and begin.length()>0 and end!=null and end.length()>0">
+			and no between #{begin} AND #{end}
+		</if>
+		
+		<if test="cardno!=null and cardno.length()>0">
+			and no like #{cardno}
+		</if>
+		
+		<if test="assignCards!=null">
+			and no in
+			<foreach collection="assignCards" item="item"  open="(" separator="," close=")">  
+       	 		#{item}  
+     		</foreach> 
+		</if>
+		
+		<if test="cardpassword!=null">
+			and (password like #{cardpassword}
+				<if test="despwd!=null"> or despwd=#{despwd}</if>
+			)
+		</if>
+		<if test="saleStatus!=null and saleStatus.length()>0">
+		    and sale_status = #{saleStatus}
+		</if>
+		<if test="rechargeStatus!=null and rechargeStatus.length()>0">
+		    and recharge_status = #{rechargeStatus}
+		</if>
+		<if test="status!=null and status.length()>0">
+		    and status = #{status}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null">
+		      and buy_time BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+			  order by id desc 
+		<if test="offset!=null">
+			limit #{offset}, #{limit}
+		</if>
+	</select> 
+	
+	<select id="count" parameterType="Map" resultType="int">
+		select count(*) as count
+		from card where 1=1
+		<if test="agent_id!=null and agent_id.length()>0">
+			and agent_id=#{agent_id}
+		</if>
+		
+		<if test="begin!=null and begin.length()>0 and end!=null and end.length()>0">
+			and no between #{begin} AND #{end}
+		</if>
+		
+		<if test="cardno!=null and cardno.length()>0">
+			and no like #{cardno}
+		</if>
+		
+		<if test="assignCards!=null">
+			and no in
+			<foreach collection="assignCards" item="item"  open="(" separator="," close=")">  
+       	 		#{item}  
+     		</foreach> 
+		</if>
+		
+     	
+		<if test="cardpassword!=null">
+			and (password like #{cardpassword}
+				<if test="despwd!=null"> or despwd=#{despwd}</if>
+			)
+		</if>
+		<if test="saleStatus!=null and saleStatus.length()>0">
+		    and sale_status = #{saleStatus}
+		</if>
+		<if test="rechargeStatus!=null and rechargeStatus.length()>0">
+		    and recharge_status = #{rechargeStatus}
+		</if>
+		<if test="status!=null and status.length()>0">
+		    and status = #{status}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null">
+		      and buy_time BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+		
+	</select>
+	
+		<!-- 修改卡的状态-->
+	<update id="changeStatus" parameterType="Card">
+		update card set 
+		sale_status=#{saleStatus}
+		<if test="saleStatus==2">
+		    ,sale_time=now()
+		</if>
+		where id=#{id}
+	</update>
+</mapper> 

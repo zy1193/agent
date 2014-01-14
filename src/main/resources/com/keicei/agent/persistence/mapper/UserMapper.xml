@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.UserMapper">
+
+	<select id="select" parameterType="String" resultType="User">
+		select
+		id,name,password,role from user where id=#{0}
+	</select>
+
+	<insert id="insert" parameterType="User">
+		insert into user
+		(id,name,password,role)
+		values
+		(#{id},#{name},#{password},#{role})
+	</insert>
+
+	<update id="update" parameterType="User">
+		update user
+		<set>
+			<if test="name!=null">name=#{name},</if>
+			<if test="password!=null">password=#{password},</if>
+			<if test="role!=null">role=#{role}</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<update id="changePassword" parameterType="User">
+		update user set
+		password=#{password}
+		where id=#{id}
+	</update>
+	
+	<select id="list" parameterType="Map" resultType="User">
+		select id,name,password,role from user 
+		<where>
+			<if test="id!=null">id like #{id}</if>
+		</where>
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete from user where id=#{0}
+	</delete>
+	
+</mapper> 

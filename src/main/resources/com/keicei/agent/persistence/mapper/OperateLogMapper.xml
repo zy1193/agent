@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.OperateLogMapper">
+
+	<resultMap type="OperateLog" id="operateLogMap">
+		<result property="loginId" column="login_id" />
+		<result property="menuId" column="menu_id" />
+		<result property="operateDetail" column="operate_detail" />
+		<result property="operateTime" column="operate_time" />
+	</resultMap>
+
+	<insert id="insert" parameterType="OperateLog">
+		insert into operate_log
+		(login_id,ip,menu_id,category,operate_detail,operate_time) values
+		(#{loginId},#{ip},#{menuId},#{category},#{operateDetail},now())
+	</insert>
+
+</mapper> 

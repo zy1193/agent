@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.AgentMapper">
+
+	<resultMap type="Agent" id="agentMap">
+		<result property="superId" column="super_id" />
+		<result property="phoneNo" column="phone_no" />
+		<result property="mobileNo" column="mobile_no" />
+		<result property="idCardNo" column="id_card_no" />
+		<result property="taobaoShopUrl" column="taobao_shop_url" />
+		<result property="paipaiShopUrl" column="paipai_shop_url" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Agent">
+		insert into agent
+		(id,brand_id,name,password,super_id,rank,status, phone_no,
+		mobile_no,
+		id_card_no, qq, wangwang, taobao_shop_url, paipai_shop_url) values
+		(#{id},#{brandid},#{name},#{password},#{superId},#{rank},#{status},
+		#{phoneNo},
+		#{mobileNo}, #{idCardNo}, #{qq}, #{wangwang},
+		#{taobaoShopUrl},
+		#{paipaiShopUrl})
+	</insert>
+
+	<select id="select" parameterType="String" resultMap="agentMap">
+		select
+		id,
+		brand_id,
+		name, password,super_id,rank,status, phone_no,
+		mobile_no,
+		id_card_no,
+		qq, wangwang, taobao_shop_url, paipai_shop_url from agent
+		where
+		id=#{key}
+	</select>
+
+	<select id="list" parameterType="Map" resultMap="agentMap">
+		select
+		id, brand_id,
+		name, password,super_id,rank,status, phone_no,
+		mobile_no,
+		id_card_no,
+		qq, wangwang, taobao_shop_url, paipai_shop_url
+		from agent
+		<where>
+			<if test="id!=null">id like #{id}</if>
+			<if test="brandid!=null">and brand_id=#{brandid}</if>
+			<if test="status!=null">and status=#{status}</if>
+			<if test="acctStatus!=null"> and id in (select id from acct where
+				status=#{acctStatus})
+			</if>
+		</where>
+		order by id
+		<if test="offset!=null">limit #{offset}, #{limit}</if>
+	</select>
+
+	<select id="count" parameterType="Map" resultType="int">
+		select count(1) from agent
+		<where>
+			<if test="id!=null">id like #{id}</if>
+			<if test="brandid!=null">and brand_id=#{brandid}</if>
+			<if test="status!=null">and status=#{status}</if>
+			<if test="acctStatus!=null"> and id in (select id from acct where
+				status=#{acctStatus})
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete" parameterType="String">
+		delete from agent
+		where
+		id=#{key}
+	</delete>
+
+	<update id="update" parameterType="Agent">
+		update agent
+		<set>
+			<if test="status!=null">status=#{status}</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<update id="changePassword" parameterType="Agent">
+		update agent set
+		password=#{password}
+		where id=#{id}
+	</update>
+
+	<!-- 查询下级代理 -->
+	<select id="selectSubAgent" resultMap="agentMap">
+		select id, name,
+		password,super_id,rank,status, phone_no,
+		mobile_no, id_card_no, qq,
+		wangwang, taobao_shop_url, paipai_shop_url from agent
+		where id=#{1} and
+		(
+		super_id=#{2}
+		or
+		exists (
+		select 1 from agent where
+		super_id=#{2} and
+		id=(select super_id from agent where id=#{1})
+		)
+		or exists (
+		select 1 from
+		agent where
+		super_id=#{2} and
+		id=(select super_id from agent where id=
+		(select super_id from agent where id=#{1})
+		)
+		)
+
+		)
+	</select>
+
+	<!-- 查询所有的下级代理，参数是上级代理的编号 -->
+	<select id="listSubAgent" parameterType="String" resultMap="agentMap">
+		select id, name,
+		password,super_id,rank,status, phone_no,
+		mobile_no,
+		id_card_no, qq,
+		wangwang, taobao_shop_url, paipai_shop_url from agent
+		where id in
+		(
+		select id from agent where super_id=#{id}
+		union
+		select id
+		from agent where super_id in
+		(select id from agent where
+		super_id=#{id})
+		union
+		select id from agent where super_id in
+		(select id
+		from agent where super_id in
+		(select id from agent where
+		super_id=#{id}))
+
+		)
+		order by rank
+	</select>
+
+
+	<select id="brand" parameterType="String" resultType="String">
+		<![CDATA[
+			select brand_id from agent where id=#{0} and brand_id<>'*'
+		]]>
+	</select>
+
+	<select id="brands" resultMap="agentMap">
+		<![CDATA[
+			select id,brand_id from agent where brand_id<>'*'
+		]]>
+	</select>
+	
+	<update id="audit">
+		update agent set brand_id=#{0} where id=#{1}
+	</update>
+	
+</mapper> 

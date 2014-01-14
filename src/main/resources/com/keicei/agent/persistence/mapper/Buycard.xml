@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.Buycard">
+
+	<resultMap type="BuycardOrder" id="buycardMap">
+		<result property="orderSn" column="order_sn" />
+		<result property="agentId" column="agent_id" />
+		<result property="productId" column="product_id" />
+		<result property="productCount" column="product_count" />
+		<result property="productPrice" column="product_price" />
+		<result property="totalAmount" column="total_amount" />
+		<result property="orderTime" column="order_time" />
+	</resultMap>
+
+	<select id="list" parameterType="Map" resultMap="buycardMap">
+		select id,order_sn,agent_id,product_id,product_count,product_price,total_amount
+		,status,rmk,order_time
+		from buycard_order where agent_id=#{agent_id}
+		<if test="orderSn"><!-- 订单号 -->
+			and order_sn like #{orderSn}
+		</if>
+		<if test="productId!=null"><!-- 产品编号 -->
+		    and product_id = #{productId}
+		</if>
+		<if test="orderStatus!=null"><!-- 状态 -->
+		    and status = #{orderStatus}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+		      and order_time BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+			  order by id desc 
+		<if test="offset!=null">
+			limit #{offset}, #{limit}
+		</if>
+	</select> 
+	
+	<select id="count" parameterType="Map" resultType="int">
+		select count(*) as count
+		from buycard_order where agent_id=#{agent_id}
+		<if test="orderSn"><!-- 订单号 -->
+			and order_sn like #{orderSn}
+		</if>
+		<if test="productId!=null"><!-- 产品编号 -->
+		    and product_id = #{productId}
+		</if>
+		<if test="orderStatus!=null"><!-- 状态 -->
+		    and status = #{orderStatus}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+		      and order_time BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+		
+	</select>
+</mapper> 

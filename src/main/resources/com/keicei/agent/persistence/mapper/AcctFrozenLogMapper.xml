@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.AcctFrozenLogMapper">
+
+	<resultMap type="AcctFrozenLog" id="acctFrozenLogMap">
+		<result property="acctId" column="acct_id" />
+		<result property="frozenAmount" column="frozen_amount" />
+		<result property="frozenType" column="frozen_type" />
+		<result property="frozenTime" column="frozen_time" />
+		<result property="frozenSn" column="frozen_sn" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<insert id="insert" parameterType="AcctFrozenLog" useGeneratedKeys="true" keyProperty="id">
+		insert into acct_frozen_log
+		(acct_id,brand_id,frozen_amount,frozen_type,frozen_sn,frozen_time,status,rmk)
+		values
+		(#{acctId},#{brandid},#{frozenAmount},#{frozenType},#{frozenSn},now(),#{status},#{rmk})
+	</insert>
+	<update id="thaw" parameterType="acctFrozenLog">
+		update acct_frozen_log
+		set status='1'
+		where frozen_sn=#{frozenSn} and
+		frozen_type=#{frozenType} and status='0'
+	</update>
+
+</mapper> 

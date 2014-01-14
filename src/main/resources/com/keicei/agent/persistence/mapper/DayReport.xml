@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.DayReport">
+
+	<resultMap type="AcctDayReport" id="acctDayReportMap">
+		<result property="acctId" column="acct_id" />
+		<result property="transType" column="trans_type" />
+		<result property="payAmount" column="pay_amount" />
+		<result property="incomeAmount" column="income_amount" />
+		<result property="transCount" column="trans_count" />
+		<result property="transDate" column="trans_date" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<!-- 日报list -->
+	<select id="list" parameterType="Map" resultMap="acctDayReportMap">
+		select
+		id,brand_id,acct_id,pay_amount,income_amount,trans_type,trans_count,trans_date
+		from acct_day_report where acct_id in
+		<foreach item="agentid" collection="agent_id" open="("
+			separator="," close=")">
+			#{agentid}
+		</foreach>
+		<if test="transType!=null"><!-- 交易类型 -->
+			and trans_type = #{transType}
+		</if>
+		<if test="agents!=null"><!--下级 -->
+			and acct_id = #{agents}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			and trans_date BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+		order by id desc
+		<if test="offset!=null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<!-- 日报count -->
+	<select id="count" parameterType="Map" resultType="int">
+		select count(*) as count
+		from acct_day_report where acct_id in
+		<foreach item="agentid" collection="agent_id" open="("
+			separator="," close=")">
+			#{agentid}
+		</foreach>
+		<if test="transType!=null"><!-- 交易类型 -->
+			and trans_type = #{transType}
+		</if>
+		<if test="agents!=null"><!--下级 -->
+			and acct_id = #{agents}
+		</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			and trans_date BETWEEN #{dateStart} and #{dateEnd}
+		</if>
+	</select>
+
+</mapper> 

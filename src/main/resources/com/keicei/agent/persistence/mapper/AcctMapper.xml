@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.AcctMapper">
+
+	<resultMap type="Acct" id="acctMap">
+		<result property="availableBalance" column="available_balance" />
+		<result property="frozenBalance" column="frozen_balance" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<insert id="insert" parameterType="Acct">
+		insert into acct
+		(id, brand_id,
+		available_balance, frozen_balance, deposit, status)
+		values
+		(#{id},
+		#{brandid},
+		#{availableBalance}, #{frozenBalance}, #{deposit},
+		#{status})
+	</insert>
+
+	<select id="list" parameterType="Map" resultMap="acctMap">
+		select
+		id, brand_id,
+		available_balance, frozen_balance, deposit, status
+		from acct
+		<where>
+			<if test="id!=null">id like #{id}</if>
+			<if test="brandid!=null">and brand_id=#{brandid}</if>
+		</where>
+		<if test="offset!=null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+
+	<select id="count" parameterType="Map" resultType="int">
+		select count(1) from acct
+		<where>
+			<if test="id!=null">id like #{id}</if>
+			<if test="brandid!=null">and brand_id=#{brandid}</if>
+		</where>
+	</select>
+
+	<select id="select" parameterType="String" resultMap="acctMap">
+		select
+		id, brand_id,
+		available_balance, frozen_balance, deposit, status
+		from acct where
+		id=#{key}
+	</select>
+
+	<update id="update" parameterType="Acct">
+		update acct
+		<set>
+			<if test="status!=null">status=#{status}</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<update id="audit" parameterType="String">
+		update acct set status='0',brand_id=#{0}
+		where id=#{1} and status='3'
+	</update>
+
+
+	<update id="frozen">
+		update acct set
+		available_balance=available_balance-#{1},
+		frozen_balance=frozen_balance+#{1}
+		where id=#{0} and
+		available_balance>=#{1}
+	</update>
+
+	<update id="thaw">
+		update acct set
+		available_balance=available_balance+#{1},
+		frozen_balance=frozen_balance-#{1}
+		where id=#{0} and
+		frozen_balance>=#{1}
+	</update>
+
+	<update id="pay" parameterType="AcctTransLog">
+		update acct set
+		available_balance=available_balance-#{payAmount}
+		where id=#{acctId} and
+		available_balance>=#{payAmount}
+	</update>
+
+	<!-- 钱包基本操作：进账 -->
+	<update id="income" parameterType="acctTransLog">
+		update acct set
+		available_balance=available_balance+#{incomeAmount}
+		where id=#{acctId}
+	</update>
+
+	<delete id="delete" parameterType="String">
+		delete from acct where id=#{0}
+	</delete>
+	
+	<!-- 余额统计 -->
+	<select id="listbalstat" parameterType="Map" resultMap="acctMap">
+		SELECT SUM(available_balance)as sAvailableBalance
+		,SUM(frozen_balance)as sFrozenBalance
+		,status
+		,count(*) AS count
+		FROM
+		acct
+		WHERE 1 = 1
+		<if test="status!=null">
+			AND status = #{status}
+		</if>
+		GROUP BY status
+		<if test="offset!=null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+	
+	<!-- 余额统计数量 -->
+	<select id="countbal" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM(
+		SELECT
+		SUM(available_balance) as sAvailableBalance
+		,SUM(frozen_balance) as sFrozenBalance
+		,status
+		,count(*)
+		FROM acct
+		<where>
+			<if test="status!=null">
+				AND status = #{status}
+			</if>
+		</where>
+		GROUP BY status) tab
+	</select>
+</mapper> 

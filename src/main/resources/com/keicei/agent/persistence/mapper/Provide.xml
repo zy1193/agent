@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.Provide">
+
+	<resultMap type="Agent" id="agentMap">
+		<result property="superId" column="super_id" />
+		<result property="phoneNo" column="phone_no" />
+		<result property="mobileNo" column="mobile_no" />
+		<result property="idCardNo" column="id_card_no" />
+		<result property="taobaoShopUrl" column="taobao_shop_url" />
+		<result property="paipaiShopUrl" column="paipai_shop_url" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<!-- 查询所有的下级代理，参数是上级代理的编号(查3级) -->
+	<select id="listSubAgent" parameterType="String" resultMap="agentMap">
+		select id, name from agent
+		where id in
+		(
+		select id from agent where super_id=#{id}
+		union
+		select id from agent where super_id in
+		(select id from agent where super_id=#{id})
+		union
+		select id from agent where super_id in
+		(select id from agent where super_id in
+		(select id from agent where super_id=#{id}))
+		)
+		order by rank
+	</select>
+
+	<!-- 授信 -->
+	<update id="provide" parameterType="Acct">
+		update acct set available_balance=available_balance-#{availableBalance}
+		where id=#{id} and available_balance>=#{availableBalance}
+	</update>
+
+</mapper> 

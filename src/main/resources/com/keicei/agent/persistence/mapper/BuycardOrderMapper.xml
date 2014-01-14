@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.BuycardOrderMapper">
+
+	<resultMap type="BuycardOrder" id="buycardOrderMap">
+		<result property="agentId" column="agent_id" />
+		<result property="orderSn" column="order_sn" />
+		<result property="productId" column="product_id" />
+		<result property="productCount" column="product_count" />
+		<result property="productPrice" column="product_price" />
+		<result property="totalAmount" column="total_amount" />
+		<result property="orderTime" column="order_time" />
+		<result property="brandid" column="brand_id" />
+	</resultMap>
+
+	<insert id="insert" parameterType="BuycardOrder"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into buycard_order
+		(order_sn,agent_id,brand_id,product_id,product_price,total_amount,product_count,status,rmk,order_time)
+		values
+		(#{orderSn},#{agentId},#{brandid},#{productId},#{productPrice},#{totalAmount},#{productCount},#{status},#{rmk},now())
+	</insert>
+
+	<update id="updateStatus" parameterType="BuycardOrder">
+		update buycard_order set
+		status=#{status} where id=#{id}
+	</update>
+
+	<!-- 提卡统计 -->
+	<select id="list" resultMap="buycardOrderMap" parameterType="Map">
+		SELECT agent_id,brand_id,product_id,sum(product_count)as
+		sumProductCount,sum(total_amount) as sumTotalPrice,status,order_time
+		FROM buycard_order WHERE status = '2'
+		<if test="productId!=null"><!-- 产品编号 -->
+			AND product_id = #{productId}
+		</if>
+		<if test="agentId!=null">
+			AND agent_id like "%"#{agentId}"%"
+		</if>
+		<if test="brandid!=null">brand_id=#{brandid}</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			AND order_time BETWEEN #{dateStart} AND #{dateEnd}
+		</if>
+		GROUP BY Date(order_time),agent_id,product_id
+		ORDER BY Date(order_time)
+		DESC
+		<if test="offset!=null">
+			limit #{offset},#{limit}
+		</if>
+	</select>
+	
+	<select id="count" resultType="int" parameterType="Map">
+		SELECT count(1) FROM (
+		SELECT 1 FROM buycard_order WHERE status = '2'
+		<if test="productId!=null"><!-- 产品编号 -->
+			AND product_id = #{productId}
+		</if>
+		<if test="agentId!=null">
+			AND agent_id like "%"#{agentId}"%"
+		</if>
+		<if test="brandid!=null">brand_id=#{brandid}</if>
+		<if test="dateStart!=null and dateEnd!=null"><!--订单时间 -->
+			AND order_time BETWEEN #{dateStart} AND #{dateEnd}
+		</if>
+		GROUP BY Date(order_time),agent_id,product_id
+		ORDER BY Date(order_time)
+		DESC
+		) tab
+	</select>
+</mapper> 

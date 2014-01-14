@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="aop" namespace="/aop" extends="struts-default">
+		<global-results>
+			<result name="error" type="freemarker">/template/result/error.ftl</result>
+			<result name="success" type="freemarker">/template/result/success.ftl
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.RuntimeException"></exception-mapping>
+		</global-exception-mappings>
+
+		<!-- 主页 -->
+		<action name="index">
+			<result type="freemarker">/template/aop/home/index.ftl</result>
+		</action>
+		<!-- 菜单页 -->
+		<action name="menu" class="menuAction" method="userMenutree">
+			<result type="freemarker">/template/aop/home/menu.ftl</result>
+		</action>
+
+		<!-- 内容页 -->
+		<action name="content" class="aopLoginAction" method="notice">
+			<result type="freemarker">/template/aop/home/content.ftl</result>
+		</action>
+		<action name="save" class="aopLoginAction" method="saveOrUpdate">
+			<result type="freemarker">/template/aop/home/content.ftl</result>
+		</action>
+
+		<!-- LOGO页 -->
+		<action name="logo" class="aopLogoAction">
+			<result type="freemarker">/template/aop/home/logo.ftl</result>
+		</action>
+
+		<!-- 选项卡页 -->
+		<action name="tabsFrame" class="tabsFrameAction" method="usertabs">
+			<result type="freemarker">/template/aop/home/tabs.ftl</result>
+		</action>
+
+		<!-- 登录 -->
+		<action name="login" class="aopLoginAction" method="login">
+			<result name="login" type="freemarker">/template/aop/login.ftl</result>
+		</action>
+		<!-- 登出 -->
+		<action name="logout" class="aopLoginAction" method="logout">
+			<result name="success" type="freemarker">/template/aop/login.ftl</result>
+		</action>
+
+		<!-- 开户审核 -->
+		<action name="audit" class="auditAction">
+			<result name="input" type="freemarker">/template/aop/acct/audit.ftl
+			</result>
+		</action>
+
+		<!-- 冻结登录帐号 -->
+		<action name="frozenlist" class="agentAction" method="list">
+			<result type="freemarker">/template/aop/agent/frozen_list.ftl</result>
+		</action>
+		<action name="frozen" class="agentAction" method="frozen" />
+
+		<!-- 重置代理商密码 -->
+		<action name="resetagentpwd" class="agentAction" method="resetPassword">
+			<result type="freemarker">/template/aop/agent/resetpwd.ftl</result>
+		</action>
+		<!-- 删除代理商资料 -->
+		<action name="deleteagent" class="agentAction" method="delete" />
+		<!-- 冻结钱包帐号 -->
+		<action name="frozenacctlist" class="acctAction" method="list">
+			<result type="freemarker">/template/aop/acct/frozen_list.ftl</result>
+		</action>
+		<action name="frozenacct" class="acctAction" method="frozen" />
+
+		<!-- 授信 -->
+		<action name="provide" class="aopProvideAction" method="provide">
+			<result type="freemarker" name="input">/template/aop/acct/provide.ftl
+			</result>
+		</action>
+		<action name="agentinfo" class="aopProvideAction" method="agentInfo">
+			<result type="freemarker">/template/aop/agent/info.ftl</result>
+		</action>
+
+		<!-- 卡追踪 -->
+		<action name="cardtrace" class="aopCardAction" method="trace">
+			<result type="freemarker">/template/aop/card/trace.ftl</result>
+		</action>
+
+		<!-- 修改密码 -->
+		<action name="changepassword" class="userAction" method="changePassword">
+			<result name="input" type="freemarker">/template/aop/user/changepassword.ftl
+			</result>
+		</action>
+		<action name="user" class="userAction" method="list">
+			<result name="success" type="freemarker">/template/aop/user/list.ftl
+			</result>
+		</action>
+		<action name="deleteuser" class="userAction" method="delete" />
+		<action name="modifyuser" class="userAction" method="modify" />
+		<action name="modifyuserinput" class="userAction" method="modifyInput">
+			<result name="input" type="freemarker">/template/aop/user/modify.ftl
+			</result>
+		</action>
+		<action name="resetpwd" class="userAction" method="resetPwd">
+			<result name="success" type="freemarker">/template/aop/user/resetpwd_result.ftl
+			</result>
+		</action>
+		<action name="adduser" class="userAction" method="add">
+			<result name="input" type="freemarker">/template/aop/user/add.ftl
+			</result>
+			<result name="success" type="freemarker">/template/aop/user/add_result.ftl
+			</result>
+		</action>
+		<!-- 查询代理商详细信息 -->
+		<action name="showDetail" class="agentAction" method="showDetail">
+			<result name="success" type="freemarker">/template/aop/agent/agentdetail.ftl
+			</result>
+		</action>
+		<!-- 提卡统计 -->
+		<action name="buycardstat" class="buycardOrderAction" method="buycardReport">
+			<result name="success" type="freemarker">/template/aop/statistical/buycardorderlist.ftl
+			</result>
+		</action>
+		<!-- 流水统计 -->
+		<action name="walletstat" class="acctTransLogAction" method="listAccTransLog">
+			<result name="success" type="freemarker">/template/aop/statistical/accttranslog.ftl
+			</result>
+		</action>
+		<!-- 充值统计 -->
+		<action name="rechargestat" class="cardAction" method="listRechargestat">
+			<result name="success" type="freemarker">/template/aop/statistical/rechargestat.ftl
+			</result>
+		</action>
+		<!-- 余额统计 -->
+		<action name="balstat" class="acctAction" method="listbalstat">
+			<result name="success" type="freemarker">/template/aop/statistical/balstat.ftl
+			</result>
+		</action>
+		<!-- 账户流水 -->
+		<action name="acctloglist" class="acctlogAction" method="list">
+			<result name="success" type="freemarker">/template/aop/acct/list.ftl
+			</result>
+		</action>
+		
+		<action name="cardinfoaop" class="cardAction" method="infoaop">
+			<result name="success" type="freemarker">/template/amp/card/card_info.ftl
+			</result>
+		</action>
+		
+		<!-- 卡冻结  -冻结解冻 -查询  -->
+		<action name="querycardlist" class="cardListAction" method="queryCardList">
+			<result name="success" type="freemarker">/template/aop/card/cardfrozen.ftl
+			</result>
+		</action>
+		
+		
+		<!-- 卡冻结  -冻结解冻  -->
+		<action name="cardfrozen" class="cardAction" method="frozenOrThawCard">
+			<result name="success" type="freemarker">/template/result/success.ftl
+			</result>
+			<result name="error" type="freemarker">/template/result/error.ftl
+			</result>
+			<result name="input" type="freemarker">/template/aop/card/cardfrozen.ftl
+			</result>
+		</action>
+		
+		<!-- 卡冻结  -冻结解冻 -查询-根据开始和结束卡号  -->
+		<action name="queryserialcardlist" class="cardListAction" method="querySerialCardList">
+			<result name="success" type="freemarker">/template/aop/card/serialcardfrozen.ftl
+			</result>
+		</action>
+		
+		
+		<!-- 卡冻结  -冻结解冻-根据开始和结束卡号  -->
+		<action name="serialcardfrozen" class="cardAction" method="serialFrozenOrThawCard">
+			<result name="success" type="freemarker">/template/result/success.ftl
+			</result>
+			<result name="error" type="freemarker">/template/result/error.ftl
+			</result>
+			<result name="input" type="freemarker">/template/aop/card/serialcardfrozen.ftl
+			</result>
+		</action>
+		
+		
+		
+	</package>
+
+</struts>

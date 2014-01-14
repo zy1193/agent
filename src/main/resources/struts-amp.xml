@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="amp" namespace="/amp" extends="struts-default">
+		<global-results>
+			<result name="error" type="freemarker">/template/result/error.ftl</result>
+			<result name="success" type="freemarker">/template/result/success.ftl
+			</result>
+			<result name="formaterror" type="freemarker">/template/result/formaterror.ftl
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping result="error"
+				exception="java.lang.RuntimeException"></exception-mapping>
+			<exception-mapping result="formaterror"
+				exception="com.opensymphony.xwork2.config.ConfigurationException"></exception-mapping>
+		</global-exception-mappings>
+
+		<!-- 主页 -->
+		<action name="index">
+			<result type="freemarker">/template/amp/home/index.ftl</result>
+		</action>
+		<!-- 菜单页 -->
+		<action name="menu" class="menuAction" method="menutree">
+			<result type="freemarker">/template/amp/home/menu.ftl</result>
+		</action>
+
+		<!-- 内容页 -->
+		<action name="content" class="loginAction" method="notice">
+			<result type="freemarker">/template/amp/home/content.ftl</result>
+		</action>
+
+		<!-- LOGO页 -->
+		<action name="logo" class="logoAction">
+			<result type="freemarker">/template/amp/home/logo.ftl</result>
+		</action>
+
+		<!-- 选项卡页 -->
+		<action name="tabsFrame" class="tabsFrameAction" method="tabs">
+			<result type="freemarker">/template/amp/home/tabs.ftl</result>
+		</action>
+
+		<!-- 我的资料 -->
+		<action name="myprofile" class="agentAction" method="myprofile">
+			<result name="success" type="freemarker">/template/amp/profile/profile.ftl
+			</result>
+		</action>
+		<!-- 下级资料 -->
+		<action name="subprofile" class="agentAction" method="subprofile">
+			<result name="success" type="freemarker">/template/amp/profile/subprofile.ftl
+			</result>
+		</action>
+		<!-- 修改密码 -->
+		<action name="password" class="agentAction" method="password">
+			<result name="input" type="freemarker">/template/amp/profile/changepassword.ftl
+			</result>
+		</action>
+		<!-- 余额查询 -->
+		<action name="mybal" class="acctAction" method="mybal">
+			<result name="success" type="freemarker">/template/amp/acct/mybal.ftl
+			</result>
+		</action>
+
+		<action name="buycard" class="cardAction" method="buycard">
+			<result name="input" type="freemarker">/template/amp/card/buy_input.ftl
+			</result>
+		</action>
+
+		<!-- 查询所有下级代理商 -->
+		<action name="provide" class="provideAction" method="subproname">
+			<result name="success" type="freemarker">/template/amp/acct/provide.ftl
+			</result>
+		</action>
+
+		<!-- 在线充值 -->
+		<action name="recharge" class="rechargeAction" method="recharge">
+			<result name="success" type="freemarker">/template/amp/acct/recharge.ftl
+			</result>
+		</action>
+
+		<!-- 授信 -->
+		<action name="accredited" class="provideAction" method="accredited"></action>
+
+		<!-- 代理商卡信息查询list -->
+		<action name="cardlist" class="cardListAction" method="cardlist">
+			<result name="success" type="freemarker">/template/amp/card/card_list.ftl
+			</result>
+		</action>
+		<action name="cardinfo" class="cardAction" method="info">
+			<result name="success" type="freemarker">/template/amp/card/card_info.ftl
+			</result>
+		</action>
+		
+		
+		<!-- 代理商卡信息状态修改list -->
+		<action name="cardstatus" class="cardListAction" method="cardlist">
+			<result name="success" type="freemarker">/template/amp/card/cardstatus.ftl
+			</result>
+		</action>
+
+		<!-- 代理商卡信息状态修改 -->
+		<action name="changestatus" class="cardListAction" method="changestatus">
+			<result name="success" type="freemarker">/template/amp/card/cardstatus.ftl
+			</result>
+		</action>
+
+		<!-- 代理商订单查询 -->
+		<action name="buycardorder" class="buycardAction" method="buycardorderlist">
+			<result name="success" type="freemarker">/template/amp/statistical/buycardlist.ftl
+			</result>
+		</action>
+
+		<!-- 我的流水 -->
+		<action name="myacct" class="acctTransLogAction" method="runningaccount">
+			<result name="success" type="freemarker">/template/amp/statistical/myacct.ftl
+			</result>
+		</action>
+
+		<!-- 下级流水 -->
+		<action name="subacct" class="acctTransLogAction" method="subrunningaccount">
+			<result name="success" type="freemarker">/template/amp/statistical/subacct.ftl
+			</result>
+		</action>
+
+		<!-- 我的日报 -->
+		<action name="mydayrpt" class="dayReportAction" method="mydayreport">
+			<result name="success" type="freemarker">/template/amp/statistical/myacctdayreport.ftl
+			</result>
+		</action>
+
+		<!-- 下级日报 -->
+		<action name="subdayrpt" class="dayReportAction" method="subdayreport">
+			<result name="success" type="freemarker">/template/amp/statistical/subacctdayreport.ftl
+			</result>
+		</action>
+
+		<!-- 库存统计 -->
+		<action name="stockstat" class="stockStatAction" method="stockstat">
+			<result name="success" type="freemarker">/template/amp/statistical/stockstat.ftl
+			</result>
+		</action>
+
+		<!-- 代理商免费注册 -->
+		<action name="register" class="registerAction" method="register">
+			<result name="input" type="freemarker">/template/amp/register.ftl</result>
+		</action>
+		<!-- 登录 -->
+		<action name="login" class="loginAction" method="login">
+			<result name="login" type="freemarker">/template/amp/login.ftl</result>
+		</action>
+		<!-- 登出 -->
+		<action name="logout" class="loginAction" method="logout">
+			<result name="success" type="freemarker">/template/amp/login.ftl</result>
+		</action>
+		
+		
+		<!-- 代充 -->
+		<action name="userrecharge" class="userRechargeAction" method="userRecharge">
+			<result name="input" type="freemarker">/template/amp/acct/userrecharge.ftl</result>
+		</action>
+		
+		<!-- 代充 记录-->
+		<action name="userrechargelist" class="userRechargeAction" method="findUserRerchargeLogList">
+			<result name="input" type="freemarker">/template/amp/acct/userrechargelist.ftl</result>
+			<result name="success" type="freemarker">/template/amp/acct/userrechargelist.ftl</result>
+		</action>
+		
+	</package>
+
+</struts>

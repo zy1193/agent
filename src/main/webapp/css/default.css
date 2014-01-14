@@ -1,0 +1,97 @@
+body {font-family: consolas, 宋体;font-size: 14px;line-height: 150%;background-color: #fff;}
+body,div ,ul,li,h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, blockquote, p {padding:0px;margin:0px;}
+#maincontainer {width: 840px;}
+a {text-decoration: none;color: blue;}
+a:hover {text-decoration: underline;color: red;}
+form {margin: 0px;padding: 0px;}
+input{vertical-align:middle;}
+ul {list-style-type: none;}
+#mainmenu ul {margin-bottom: 0px;padding-bottom: 0px;}
+#mainmenu li {float: left;display: block;padding: 0px;margin-left: 8px;border: 2px solid DarkGray;border-bottom: none;width: 120px;text-align: center;}
+#mainmenu li a {display: block;padding: 6px;margin: 1px;}
+#mainmenu li a:hover {background-color: DarkGray;color: white;}
+#mainmenu div {height: 12px;background-color: DarkGray;margin: 0px;padding: 0px;}
+h1 {font-family: consolas, 宋体;font-size: 18px;font-weight: bold;line-height: 150%;float: left;}
+.contbg{background:#24425d;}
+h2 {font-family: consolas, 宋体;font-size: 16px;font-weight: bold;line-height: 150%;}
+/** 清除浮动造成的塌陷  http://www.zhangxinxu.com/wordpress/?p=1136 **/
+.fix {*zoom: 1;margin:20px 0 0px 30px;}
+.fix  li{line-height:30px;}
+.fix .label{text-align:right;padding-right:15px;color:#666;font-weight:bold;}
+.fix:after {display: block;content: "clear";height: 0;clear: both;overflow: hidden;visibility: hidden;}
+table {border-collapse: collapse;}
+td {padding: 0px;}
+.fr {float: right;}
+li.nl {float: left;clear: left;}
+li.sl {float: left; }
+li.ll {float: none;clear: both;}
+a.nav {	float: right;margin-top: 15px;}
+label.error {background-image: url(../images/error.png);background-repeat: no-repeat;color: red;padding-left: 20px;margin-left: 4px;}
+/*输入框====更宽 ipb_l宽 ipb_m 窄ipb_s========================*/
+ .ipb_l,.ipb_m,.ipb_s{background: url("../images/bg_fade_sml.png") repeat-x scroll center top transparent;border: 1px solid #999999;border-radius: 3px 3px 3px 3px;
+ color: #666666; margin-bottom: 5px;padding: 3px 5px;margin-right:10px;}
+.ipb_m{padding:0px 4px;height:22px;line-height:22px;}
+.ipb_l{height:24px;line-height:24px;padding:0px 0 0 5px;}
+/*按钮====大but_l 中but_m   小but_s=================*/
+.but_l,.but_m, .but_s{ background: url("../images/bg_buttons.png") repeat-x  center top ;border: 1px solid #0D87AE ;border-radius: 7px 7px 7px 7px;
+color: #FFFFFF;font-size: 14px;font-weight: 700;padding: 0px 10px;height:30px;line-height:30px;}
+.but_s{ font-size: 12px;font-weight: 300;height:25px;line-height:25px;}
+.mima{margin-left:105px;width:80px;}
+.shouxin{width:80px;margin-top:10px;}
+.but_m{font-size:12px;padding:3px 10px;}
+/*.btn:hover{background: url("../images/bg_buttons.png") repeat-x -50px scroll center top transparent;}*/
+/*头部*/
+.head{background:url(../images/head.png) repeat-x;width:100%;}
+.head .logo{float:left;height:81px;background:url(../images/logo.png) no-repeat;width:426px;}
+.head .loding{float:right;background:url(../images/loding.png) no-repeat;padding:30px 0 0 170px;width:311px;color:#b3e2fb;font-size:12px;height:50px;}
+.head .loding span{margin:0 7px;color:#668cad;}
+.head .loding  a{color:#cfbf52;}
+/*清除*/
+.clear{clear:both;font-size:0px;line-height:0px;height:1px;}
+/*表格*/
+#listTable {/*background:#d0d0d0;*/border-top:1px solid #d0d0d0;border-left:1px solid #d0d0d0;}
+#listTable th{background:url(../images/listtable_th.gif) repeat-x;height:33px;line-height:33px;border-right:1px solid #d0d0d0;border-bottom:1px solid #d0d0d0;}
+#listTable td{/*background:url(../images/listtable_td.gif) repeat-x;*/height:30px;line-height:30px;border-right:1px solid #d0d0d0;border-bottom:1px solid #d0d0d0;padding:0 10px;}
+#listTable dd{background:url(../images/b.gif) repeat-x;height:30px;line-height:30px;border-right:1px solid #d0d0d0;border-bottom:1px solid #d0d0d0;}
+#popup{border-top:1px solid #6eb4ee;border-left:1px solid #6eb4ee;margin:10px 0;}
+#popup th,#popup td{background:#cde7fc;border-right:1px solid #6eb4ee;border-bottom:1px solid #6eb4ee;padding:0;}
+.right_box{padding:0px 20px;}
+/*登录*/
+#login_box .box{padding:130px 100px 100px 180px;}
+#login_box{background:url(../images/login.png) no-repeat;width:700px;height:480px;position: absolute; top: 50%;/*把块的顶边定义在浏览器的中线上（此时并未居中）*/ left: 50%; margin-top: -240px;/*把块的一半移动到中线以上实现居中*/margin-left:-350px;}
+.login_name,.login_prass{background:url(../images/icons.gif) no-repeat;height:30px;line-height:30px;border: 1px solid #999999;border-radius: 3px 3px 3px 3px;color: #666666;padding-left:30px;width:210px;}
+.login_prass{background-position:0 -47px;}
+.login_yan{height:30px;line-height:30px;border: 1px solid #999999;border-radius: 3px 3px 3px 3px;color: #666666;width:150px;}
+.login_in,.login_injon,.login_in2{background:url(../images/icons.gif) no-repeat;height:41px;border:none;}
+.login_in{background-position:0 -117px;width:103px;margin:0 10px 0 60px;}
+.login_injon{background-position:-126px -117px;width:113px;}
+/*后台登录*/
+#login_box2 .box{padding:150px 0px 0px 55px;}
+#login_box2 {background:url(../images/login_2.png) no-repeat;width:432px;height:440px;position: absolute; top: 50%;/*把块的顶边定义在浏览器的中线上（此时并未居中）*/ left: 50%; margin-top: -200px;/*把块的一半移动到中线以上实现居中*/margin-left:-216px;}
+.login_in2{background-position:0 -200px;width:115px;margin:0 10px 0 70px;}
+
+/*注册*/
+.register_box{border:1px solid #e9e9e9;background:#fff;}
+.tishi{border-top:1px solid #e9e9e9;margin:20px ;padding:10px 0 0 20px;}
+.tishi li{line-height:22px;font-size:12px;color:#888;}
+.tishi h2{padding-bottom:5px;color:#ef8200;font-size:12px;}
+.register_box .ipb_m{width:300px;}
+.register_box .fix li{height:40px;line-height:40px;}
+.register_box .fix .label{font-weight: normal;}
+#logo2{ background:url(../images/logo2.png) no-repeat center left;height:66px;}
+
+/*欢迎页*/
+#welcome{width:618px;height:374px;position: absolute; top: 50%;margin-top: -187px;margin-left:50px; background:url(../images/huanying.png) no-repeat;}
+/*404*/
+.error_404 ,.error_405{background:url(../images/icons.gif) no-repeat 0 -760px;width:394px;height:242px;text-align:center; font-size:14px;position: absolute; top: 35%;/*把块的顶边定义在浏览器的中线上（此时并未居中）*/ 
+ margin-top: -121px;/*把块的一半移动到中线以上实现居中*/margin-left:-182px;left:35%;}
+.error_404 .box{padding:170px 0 0 0;}
+.error_404  a,.error_405  a{color:#357baf;text-decoration:underline;}
+.error_405{background:url(../images/icons.gif) no-repeat 0 -500px;}
+.error_405 .box{padding:130px 0 0 160px;}
+.error_406{width:514px;height:442px;text-align:center; font-size:14px;position: absolute; top: 35%;/*把块的顶边定义在浏览器的中线上（此时并未居中）*/ 
+ margin-top: -121px;/*把块的一半移动到中线以上实现居中*/margin-left:-257px;left:50%;}
+.error_406 .box{padding:20px 30px ;background:url(../images/404_cbg.gif) repeat-y;}
+.error_406 .top{background:url(../images/icons.gif) no-repeat 0 -410px;height:25px;}
+.error_406 .bottom{background:url(../images/icons.gif) no-repeat 0 -435px;height:25px;}
+.error_406 .xx{background:url(../images/icons.gif) no-repeat 0 -270px;height:117px;width:117px;margin:0 auto 20px auto;}

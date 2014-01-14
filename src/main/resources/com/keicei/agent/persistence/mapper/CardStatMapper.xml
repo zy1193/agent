@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.CardStatMapper">
+
+<select id="buyStat" parameterType="CardStat" resultType="CardStat">
+
+	select agent_id as agentId,product_id as productId,
+	
+</select>
+</mapper> 

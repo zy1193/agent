@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.keicei.agent.domain.entity.Agent"
+			alias="Agent" />
+		<typeAlias type="com.keicei.agent.domain.entity.Acct" alias="Acct" />
+		<typeAlias type="com.keicei.agent.domain.entity.Menu" alias="Menu" />
+		<typeAlias type="com.keicei.agent.domain.entity.Card" alias="Card" />
+		<typeAlias type="com.keicei.agent.domain.entity.BuycardOrder"
+			alias="BuycardOrder" />
+		<typeAlias type="com.keicei.agent.domain.entity.AcctFrozenLog"
+			alias="AcctFrozenLog" />
+		<typeAlias type="com.keicei.agent.domain.entity.AcctTransLog"
+			alias="AcctTransLog" />
+		<typeAlias type="com.keicei.agent.domain.entity.AcctDayReport"
+			alias="AcctDayReport" />
+		<typeAlias type="com.keicei.agent.domain.entity.User" alias="User" />
+		<typeAlias type="com.keicei.agent.domain.entity.OperateLog"
+			alias="OperateLog" />
+		<typeAlias type="com.keicei.agent.domain.entity.Notice"
+			alias="Notice" />
+
+		<typeAlias type="com.keicei.agent.domain.entity.UserRechargeLog"
+			alias="UserRechargeLog" />
+	</typeAliases>
+
+</configuration> 
