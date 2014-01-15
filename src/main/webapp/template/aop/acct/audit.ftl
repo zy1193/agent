@@ -56,7 +56,7 @@
 <form action="<@s.url value='/aop/audit.action'/>">
 </form>
 <div style="margin:20px 0 0 20px;">
-代理商所属品牌(<font color="blue">品牌必须是如下内容[kc,sky,uu,efl,3g,...]</font>) <input type="text" id="brandid" class="ipb_m"/>
+代理商所属品牌(<font color="blue">品牌必须是如下内容[yx,...]</font>) <input type="text" id="brandid" class="ipb_m"/>
 
 </div>
 <table width="100%" border="0" id="listTable" style="margin:10px 0 0 20px;">
