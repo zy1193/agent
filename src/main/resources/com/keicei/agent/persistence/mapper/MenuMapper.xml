@@ -7,7 +7,7 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="Menu">
-		insert into menu
+		insert into t_agent_menu
 		(id,
 		available_balance, frozen_balance, deposit, status)
 		values
@@ -19,7 +19,7 @@
 	<select id="list" parameterType="Map" resultMap="menuMapper">
 		select
 		id,name,url,category,rank,super_id,visible
-		from menu
+		from t_agent_menu
 		<if test="category!=null">where category=#{category}</if>
 		order by rank ,id
 	</select>
@@ -28,12 +28,12 @@
 		select
 		id,
 		available_balance, frozen_balance, deposit, status
-		from menu where
+		from t_agent_menu where
 		id=#{key}
 	</select>
 
 	<delete id="delete" parameterType="String">
-		delete from menu
+		delete from t_agent_menu
 		where
 		id=#{key}
 	</delete>

@@ -19,7 +19,7 @@
 
 	<insert id="insert" parameterType="Card" useGeneratedKeys="true"
 		keyProperty="id">
-		insert into card
+		insert into t_agent_card
 		(order_sn, brand_id, no, password, price,
 		expire_date, agent_id, sale_status, recharge_status, buy_time,
 		sale_time, recharge_time, product_id,status,despwd)
@@ -38,7 +38,7 @@
 	<!-- 库存list -->
 	<select id="list" parameterType="Map" resultMap="cardMap">
 		select product_id, count(1) as counts,sum(price) as pvalue,sale_status
-		from card
+		from t_agent_card
 		where sale_status!=2 and agent_id=#{agent_id}
 		<if test="productId!=null">
 			and product_id = #{productId}
@@ -48,7 +48,7 @@
 
 	<!-- 接收充值平台的通知修改卡的充值状态 -->
 	<update id="update" parameterType="Card">
-		update card set
+		update t_agent_card set
 		recharge_time=now(),pay_orderno=#{payOrderno},uid=#{uid},
 		paymoney=#{paymoney},phone=#{phone},recharge_status=1
 		where
@@ -66,7 +66,7 @@
 		recharge_time,
 		product_id,pay_orderno,uid,phone,status
 		from
-		card where
+		t_agent_card where
 		no=#{no}
 		<if test="agentId!=null"> and agent_id=#{agentId}</if>
 	</select>
@@ -79,7 +79,7 @@
 		sale_time,
 		recharge_time,
 		product_id,pay_orderno,uid,phone,status
-		from card
+		from t_agent_card
 		where
 		password=#{password}
 		<if test="despwd!=null"> or despwd=#{despwd} </if>
@@ -87,14 +87,14 @@
 
 	<select id="tobeSwitch" parameterType="Card" resultMap="cardMap">
 		select
-		password,despwd from card where status=#{status} and
+		password,despwd from t_agent_card where status=#{status} and
 		recharge_status='0'
 		and
 		agent_id=#{agentId}
 	</select>
 
 	<update id="switchStatus" parameterType="Card">
-		update card set
+		update t_agent_card set
 		status=#{status} where agent_id=#{agentId}
 	</update>
 
@@ -105,7 +105,7 @@
 		,recharge_status
 		,product_id
 		,recharge_time
-		FROM card
+		FROM t_agent_card
 		WHERE
 		recharge_status = '1'
 		<if test="agentId!=null">
@@ -134,7 +134,7 @@
 		,recharge_status
 		,product_id
 		,recharge_time
-		FROM card
+		FROM t_agent_card
 		WHERE
 		recharge_status = '1'
 		<if test="agentId!=null">
@@ -152,7 +152,7 @@
 	<select id="getCardPassFromBeginToEndNo" parameterType="Map"
 		resultMap="cardMap">
 		select password,despwd,brand_id
-		from card
+		from t_agent_card
 		where no between #{begin} AND #{end}
 		<if test="branid!=null and branid.length()>0">
 			brand_id=#{branid}
@@ -171,7 +171,7 @@
 	<select id="getCardPassFromCardsNo" parameterType="Map"
 		resultMap="cardMap">
 		select password,despwd,brand_id
-		from card
+		from t_agent_card
 		where no in
          <foreach collection="cardsNo" item="item"  open="(" separator="," close=")">  
        	 	#{item}  
@@ -186,7 +186,7 @@
 
 
 	<update id="switchStatusByPass" parameterType="Map">
-		update card set
+		update t_agent_card set
 		status=#{status} where password in
 		<foreach collection="passList" item="item" open="("
 			separator="," close=")">

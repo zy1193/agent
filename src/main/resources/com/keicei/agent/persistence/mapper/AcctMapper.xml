@@ -9,7 +9,7 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="Acct">
-		insert into acct
+		insert into t_agent_acct
 		(id, brand_id,
 		available_balance, frozen_balance, deposit, status)
 		values
@@ -23,7 +23,7 @@
 		select
 		id, brand_id,
 		available_balance, frozen_balance, deposit, status
-		from acct
+		from t_agent_acct
 		<where>
 			<if test="id!=null">id like #{id}</if>
 			<if test="brandid!=null">and brand_id=#{brandid}</if>
@@ -34,7 +34,7 @@
 	</select>
 
 	<select id="count" parameterType="Map" resultType="int">
-		select count(1) from acct
+		select count(1) from t_agent_acct
 		<where>
 			<if test="id!=null">id like #{id}</if>
 			<if test="brandid!=null">and brand_id=#{brandid}</if>
@@ -45,12 +45,12 @@
 		select
 		id, brand_id,
 		available_balance, frozen_balance, deposit, status
-		from acct where
+		from t_agent_acct where
 		id=#{key}
 	</select>
 
 	<update id="update" parameterType="Acct">
-		update acct
+		update t_agent_acct
 		<set>
 			<if test="status!=null">status=#{status}</if>
 		</set>
@@ -58,13 +58,13 @@
 	</update>
 
 	<update id="audit" parameterType="String">
-		update acct set status='0',brand_id=#{0}
+		update t_agent_acct set status='0',brand_id=#{0}
 		where id=#{1} and status='3'
 	</update>
 
 
 	<update id="frozen">
-		update acct set
+		update t_agent_acct set
 		available_balance=available_balance-#{1},
 		frozen_balance=frozen_balance+#{1}
 		where id=#{0} and
@@ -72,7 +72,7 @@
 	</update>
 
 	<update id="thaw">
-		update acct set
+		update t_agent_acct set
 		available_balance=available_balance+#{1},
 		frozen_balance=frozen_balance-#{1}
 		where id=#{0} and
@@ -80,7 +80,7 @@
 	</update>
 
 	<update id="pay" parameterType="AcctTransLog">
-		update acct set
+		update t_agent_acct set
 		available_balance=available_balance-#{payAmount}
 		where id=#{acctId} and
 		available_balance>=#{payAmount}
@@ -88,13 +88,13 @@
 
 	<!-- 钱包基本操作：进账 -->
 	<update id="income" parameterType="acctTransLog">
-		update acct set
+		update t_agent_acct set
 		available_balance=available_balance+#{incomeAmount}
 		where id=#{acctId}
 	</update>
 
 	<delete id="delete" parameterType="String">
-		delete from acct where id=#{0}
+		delete from t_agent_acct where id=#{0}
 	</delete>
 	
 	<!-- 余额统计 -->
@@ -104,7 +104,7 @@
 		,status
 		,count(*) AS count
 		FROM
-		acct
+		t_agent_acct
 		WHERE 1 = 1
 		<if test="status!=null">
 			AND status = #{status}
@@ -124,7 +124,7 @@
 		,SUM(frozen_balance) as sFrozenBalance
 		,status
 		,count(*)
-		FROM acct
+		FROM t_agent_acct
 		<where>
 			<if test="status!=null">
 				AND status = #{status}

@@ -12,13 +12,13 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="AcctFrozenLog" useGeneratedKeys="true" keyProperty="id">
-		insert into acct_frozen_log
+		insert into t_agent_acct_frozen_log
 		(acct_id,brand_id,frozen_amount,frozen_type,frozen_sn,frozen_time,status,rmk)
 		values
 		(#{acctId},#{brandid},#{frozenAmount},#{frozenType},#{frozenSn},now(),#{status},#{rmk})
 	</insert>
 	<update id="thaw" parameterType="acctFrozenLog">
-		update acct_frozen_log
+		update t_agent_acct_frozen_log
 		set status='1'
 		where frozen_sn=#{frozenSn} and
 		frozen_type=#{frozenType} and status='0'

@@ -10,7 +10,7 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="OperateLog">
-		insert into operate_log
+		insert into t_agent_operate_log
 		(login_id,ip,menu_id,category,operate_detail,operate_time) values
 		(#{loginId},#{ip},#{menuId},#{category},#{operateDetail},now())
 	</insert>

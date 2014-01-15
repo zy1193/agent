@@ -20,7 +20,7 @@
 		select
 			id,order_sn,brand_id,agent_id,account,account_type,status,first_use,rmk,
 			recharge_amount,recharge_time
-		from user_recharge_log 
+		from t_agent_user_recharge_log 
 		where 1=1
 		<if test="agent_id"><!-- 代理商 -->
 			and agent_id = #{agent_id}
@@ -66,7 +66,7 @@
 	<select id="rechargecount" parameterType="Map" resultType="Map">
 		select
 			count(1) as rechargeCount,sum(recharge_amount) as rechargeSum
-		from user_recharge_log 
+		from t_agent_user_recharge_log 
 		where 1=1
 		<if test="agent_id"><!-- 代理商 -->
 			and agent_id = #{agent_id}
@@ -106,14 +106,14 @@
 	
 	<insert id="insert" parameterType="UserRechargeLog"
 		useGeneratedKeys="true" keyProperty="id">
-		insert into user_recharge_log
+		insert into t_agent_user_recharge_log
 		(order_sn,brand_id,agent_id,account,account_type,status,first_use,rmk,recharge_amount,recharge_time)
 		values
 		(#{orderSn},#{brandId},#{agentId},#{account},#{accountType},#{status},#{firstUse},#{rmk},#{rechargeAmount},now())
 	</insert>
 
 	<update id="updateStatus" parameterType="UserRechargeLog">
-		update user_recharge_log set
+		update t_agent_user_recharge_log set
 		status=#{status} where id=#{id}
 	</update>
 </mapper> 

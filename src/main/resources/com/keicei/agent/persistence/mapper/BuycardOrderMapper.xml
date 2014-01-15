@@ -15,14 +15,14 @@
 
 	<insert id="insert" parameterType="BuycardOrder"
 		useGeneratedKeys="true" keyProperty="id">
-		insert into buycard_order
+		insert into t_agent_buycard_order
 		(order_sn,agent_id,brand_id,product_id,product_price,total_amount,product_count,status,rmk,order_time)
 		values
 		(#{orderSn},#{agentId},#{brandid},#{productId},#{productPrice},#{totalAmount},#{productCount},#{status},#{rmk},now())
 	</insert>
 
 	<update id="updateStatus" parameterType="BuycardOrder">
-		update buycard_order set
+		update t_agent_buycard_order set
 		status=#{status} where id=#{id}
 	</update>
 
@@ -30,7 +30,7 @@
 	<select id="list" resultMap="buycardOrderMap" parameterType="Map">
 		SELECT agent_id,brand_id,product_id,sum(product_count)as
 		sumProductCount,sum(total_amount) as sumTotalPrice,status,order_time
-		FROM buycard_order WHERE status = '2'
+		FROM t_agent_buycard_order WHERE status = '2'
 		<if test="productId!=null"><!-- 产品编号 -->
 			AND product_id = #{productId}
 		</if>
@@ -51,7 +51,7 @@
 	
 	<select id="count" resultType="int" parameterType="Map">
 		SELECT count(1) FROM (
-		SELECT 1 FROM buycard_order WHERE status = '2'
+		SELECT 1 FROM t_agent_buycard_order WHERE status = '2'
 		<if test="productId!=null"><!-- 产品编号 -->
 			AND product_id = #{productId}
 		</if>

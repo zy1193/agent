@@ -13,7 +13,7 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="Agent">
-		insert into agent
+		insert into t_agent_agent
 		(id,brand_id,name,password,super_id,rank,status, phone_no,
 		mobile_no,
 		id_card_no, qq, wangwang, taobao_shop_url, paipai_shop_url) values
@@ -31,7 +31,7 @@
 		name, password,super_id,rank,status, phone_no,
 		mobile_no,
 		id_card_no,
-		qq, wangwang, taobao_shop_url, paipai_shop_url from agent
+		qq, wangwang, taobao_shop_url, paipai_shop_url from t_agent_agent
 		where
 		id=#{key}
 	</select>
@@ -43,12 +43,12 @@
 		mobile_no,
 		id_card_no,
 		qq, wangwang, taobao_shop_url, paipai_shop_url
-		from agent
+		from t_agent_agent
 		<where>
 			<if test="id!=null">id like #{id}</if>
 			<if test="brandid!=null">and brand_id=#{brandid}</if>
 			<if test="status!=null">and status=#{status}</if>
-			<if test="acctStatus!=null"> and id in (select id from acct where
+			<if test="acctStatus!=null"> and id in (select id from t_agent_acct where
 				status=#{acctStatus})
 			</if>
 		</where>
@@ -57,25 +57,25 @@
 	</select>
 
 	<select id="count" parameterType="Map" resultType="int">
-		select count(1) from agent
+		select count(1) from t_agent_agent
 		<where>
 			<if test="id!=null">id like #{id}</if>
 			<if test="brandid!=null">and brand_id=#{brandid}</if>
 			<if test="status!=null">and status=#{status}</if>
-			<if test="acctStatus!=null"> and id in (select id from acct where
+			<if test="acctStatus!=null"> and id in (select id from t_agent_acct where
 				status=#{acctStatus})
 			</if>
 		</where>
 	</select>
 
 	<delete id="delete" parameterType="String">
-		delete from agent
+		delete from t_agent_agent
 		where
 		id=#{key}
 	</delete>
 
 	<update id="update" parameterType="Agent">
-		update agent
+		update t_agent_agent
 		<set>
 			<if test="status!=null">status=#{status}</if>
 		</set>
@@ -83,7 +83,7 @@
 	</update>
 
 	<update id="changePassword" parameterType="Agent">
-		update agent set
+		update t_agent_agent set
 		password=#{password}
 		where id=#{id}
 	</update>
@@ -93,22 +93,22 @@
 		select id, name,
 		password,super_id,rank,status, phone_no,
 		mobile_no, id_card_no, qq,
-		wangwang, taobao_shop_url, paipai_shop_url from agent
+		wangwang, taobao_shop_url, paipai_shop_url from t_agent_agent
 		where id=#{1} and
 		(
 		super_id=#{2}
 		or
 		exists (
-		select 1 from agent where
+		select 1 from t_agent_agent where
 		super_id=#{2} and
-		id=(select super_id from agent where id=#{1})
+		id=(select super_id from t_agent_agent where id=#{1})
 		)
 		or exists (
 		select 1 from
-		agent where
+		t_agent_agent where
 		super_id=#{2} and
-		id=(select super_id from agent where id=
-		(select super_id from agent where id=#{1})
+		id=(select super_id from t_agent_agent where id=
+		(select super_id from t_agent_agent where id=#{1})
 		)
 		)
 
@@ -121,20 +121,20 @@
 		password,super_id,rank,status, phone_no,
 		mobile_no,
 		id_card_no, qq,
-		wangwang, taobao_shop_url, paipai_shop_url from agent
+		wangwang, taobao_shop_url, paipai_shop_url from t_agent_agent
 		where id in
 		(
-		select id from agent where super_id=#{id}
+		select id from t_agent_agent where super_id=#{id}
 		union
 		select id
-		from agent where super_id in
-		(select id from agent where
+		from t_agent_agent where super_id in
+		(select id from t_agent_agent where
 		super_id=#{id})
 		union
-		select id from agent where super_id in
+		select id from t_agent_agent where super_id in
 		(select id
-		from agent where super_id in
-		(select id from agent where
+		from t_agent_agent where super_id in
+		(select id from t_agent_agent where
 		super_id=#{id}))
 
 		)
@@ -144,18 +144,18 @@
 
 	<select id="brand" parameterType="String" resultType="String">
 		<![CDATA[
-			select brand_id from agent where id=#{0} and brand_id<>'*'
+			select brand_id from t_agent_agent where id=#{0} and brand_id<>'*'
 		]]>
 	</select>
 
 	<select id="brands" resultMap="agentMap">
 		<![CDATA[
-			select id,brand_id from agent where brand_id<>'*'
+			select id,brand_id from t_agent_agent where brand_id<>'*'
 		]]>
 	</select>
 	
 	<update id="audit">
-		update agent set brand_id=#{0} where id=#{1}
+		update t_agent_agent set brand_id=#{0} where id=#{1}
 	</update>
 	
 </mapper> 

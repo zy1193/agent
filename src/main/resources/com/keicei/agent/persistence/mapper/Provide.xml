@@ -14,24 +14,24 @@
 
 	<!-- 查询所有的下级代理，参数是上级代理的编号(查3级) -->
 	<select id="listSubAgent" parameterType="String" resultMap="agentMap">
-		select id, name from agent
+		select id, name from t_agent_agent
 		where id in
 		(
-		select id from agent where super_id=#{id}
+		select id from t_agent_agent where super_id=#{id}
 		union
-		select id from agent where super_id in
-		(select id from agent where super_id=#{id})
+		select id from t_agent_agent where super_id in
+		(select id from t_agent_agent where super_id=#{id})
 		union
-		select id from agent where super_id in
-		(select id from agent where super_id in
-		(select id from agent where super_id=#{id}))
+		select id from t_agent_agent where super_id in
+		(select id from t_agent_agent where super_id in
+		(select id from t_agent_agent where super_id=#{id}))
 		)
 		order by rank
 	</select>
 
 	<!-- 授信 -->
 	<update id="provide" parameterType="Acct">
-		update acct set available_balance=available_balance-#{availableBalance}
+		update t_agent_acct set available_balance=available_balance-#{availableBalance}
 		where id=#{id} and available_balance>=#{availableBalance}
 	</update>
 

@@ -21,7 +21,7 @@
 		select id,brand_id,order_sn,no,price,expire_date,agent_id,sale_status
 		,recharge_status,buy_time,sale_time,recharge_time,password,product_id
 	    ,pay_orderno,uid,phone,despwd,status
-		from card where 1=1
+		from t_agent_card where 1=1
 		<if test="agent_id!=null and agent_id.length()>0">
 			and agent_id=#{agent_id}
 		</if>
@@ -66,7 +66,7 @@
 	
 	<select id="count" parameterType="Map" resultType="int">
 		select count(*) as count
-		from card where 1=1
+		from t_agent_card where 1=1
 		<if test="agent_id!=null and agent_id.length()>0">
 			and agent_id=#{agent_id}
 		</if>
@@ -109,7 +109,7 @@
 	
 		<!-- 修改卡的状态-->
 	<update id="changeStatus" parameterType="Card">
-		update card set 
+		update t_agent_card set 
 		sale_status=#{saleStatus}
 		<if test="saleStatus==2">
 		    ,sale_time=now()

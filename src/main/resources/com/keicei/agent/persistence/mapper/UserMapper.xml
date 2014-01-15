@@ -4,18 +4,18 @@
 
 	<select id="select" parameterType="String" resultType="User">
 		select
-		id,name,password,role from user where id=#{0}
+		id,name,password,role from t_agent_user where id=#{0}
 	</select>
 
 	<insert id="insert" parameterType="User">
-		insert into user
+		insert into t_agent_user
 		(id,name,password,role)
 		values
 		(#{id},#{name},#{password},#{role})
 	</insert>
 
 	<update id="update" parameterType="User">
-		update user
+		update t_agent_user
 		<set>
 			<if test="name!=null">name=#{name},</if>
 			<if test="password!=null">password=#{password},</if>
@@ -25,20 +25,20 @@
 	</update>
 
 	<update id="changePassword" parameterType="User">
-		update user set
+		update t_agent_user set
 		password=#{password}
 		where id=#{id}
 	</update>
 	
 	<select id="list" parameterType="Map" resultType="User">
-		select id,name,password,role from user 
+		select id,name,password,role from t_agent_user 
 		<where>
 			<if test="id!=null">id like #{id}</if>
 		</where>
 	</select>
 	
 	<delete id="delete" parameterType="String">
-		delete from user where id=#{0}
+		delete from t_agent_user where id=#{0}
 	</delete>
 	
 </mapper> 

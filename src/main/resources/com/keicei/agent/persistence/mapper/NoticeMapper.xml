@@ -8,16 +8,16 @@
 
 	<select id="select" parameterType="String" resultMap="NoticeMap">
 		select
-		id,brand_id,title,content from notice where brand_id=#{0}
+		id,brand_id,title,content from t_agent_notice where brand_id=#{0}
 	</select>
 
 	<insert id="insert" parameterType="Notice">
-		insert into notice
+		insert into t_agent_notice
 		(brand_id,title,content) values (#{brandid},#{title},#{content})
 	</insert>
 
 	<update id="update" parameterType="Notice">
-		update notice set
+		update t_agent_notice set
 		title=#{title},content=#{content} where brand_id=#{brandid}
 	</update>
 
