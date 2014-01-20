@@ -445,11 +445,7 @@ public class CardAction extends ActionSupport {
 	private void initProductsList() {
 		productsList = new ArrayList<List<Product>>(4);
 		productsList.add(productRepository.list("1"));
-		// productsList.add(productRepository.list("2"));
-		// productsList.add(productRepository.list("3"));
-		productsList.add(productRepository.list("24"));
-		productsList.add(productRepository.list("25"));
-		productsList.add(productRepository.list("26"));
+		productsList.add(productRepository.list("2"));
 
 	}
 
