@@ -28,6 +28,8 @@
 
 		<typeAlias type="com.keicei.agent.domain.entity.UserRechargeLog"
 			alias="UserRechargeLog" />
+		<typeAlias type="com.keicei.agent.domain.entity.Goods"
+			alias="Goods" />
 	</typeAliases>
 
 </configuration> 

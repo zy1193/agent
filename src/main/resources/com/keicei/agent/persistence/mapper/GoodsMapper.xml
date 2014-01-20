@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.keicei.agent.persistence.mapper.GoodsMapper">
+
+	<resultMap type="Goods" id="GoodsMap">
+		<result property="totalFlag" column="total_flag" />
+	</resultMap>
+
+	<sql id="col">
+		id, price, money, calltime, year, month, day,
+		brandid, name,
+		des, category, total_flag
+	</sql>
+
+	<select id="list" resultMap="GoodsMap">
+		select
+		<include refid="col" />
+		from t_goods
+		
+		order by id asc
+	</select>
+
+</mapper> 

@@ -89,15 +89,11 @@
 <div class="right_box">
 <!-- the tabs -->
 <ul class="tabs">
-	<li><a href="#">小额充值卡</a></li><#--
+	<li><a href="#">充值卡</a></li><#--
 	<li><a href="#">大额充值卡</a></li>
 	<li><a href="#">包月卡[直拨]</a></li>
 	<li><a href="#">包月卡[回拨]</a></li>-->
-	<#if agent.rank == '0'>
-	<li><a href="#">VIP会员卡</a></li>
-	<li><a href="#">电脑包月卡</a></li>
-	<li><a href="#">手机包月卡</a></li>
-	</#if>
+	<li><a href="#">包月卡</a></li>
 </ul>
 
 <!-- tab "panes" -->
