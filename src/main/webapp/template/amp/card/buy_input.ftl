@@ -92,8 +92,8 @@
 	<li><a href="#">充值卡</a></li><#--
 	<li><a href="#">大额充值卡</a></li>
 	<li><a href="#">包月卡[直拨]</a></li>
-	<li><a href="#">包月卡[回拨]</a></li>-->
-	<li><a href="#">包月卡</a></li>
+	<li><a href="#">包月卡[回拨]</a></li>
+	<li><a href="#">包月卡</a></li>-->
 </ul>
 
 <!-- tab "panes" -->
